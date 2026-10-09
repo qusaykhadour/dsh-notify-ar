@@ -1,6 +1,6 @@
 {
   "name": "dsh-notify-ar",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Arabic-first actionable Windows notifications for DeepSeek Harness (dsh): toast buttons that continue, stop, or open the app — and approve or reject the agent's permission requests — without leaving your seat. Bilingual ar/en with RTL.",
   "type": "module",
   "main": "lib/index.js",

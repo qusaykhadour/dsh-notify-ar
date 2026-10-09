@@ -6,6 +6,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.1] — 2026-10-09
+
+Documentation and packaging only; no behaviour change.
+
+### Changed
+
+- `LICENSE` is now plain MIT, so GitHub's license detector recognises it as MIT rather than
+  "Other / NOASSERTION".
+- Attribution to `dsh-notify` moved into a dedicated `NOTICE.md`, which also documents what
+  differs between the two projects and which Windows components are used.
+- `package.json` gained a `test` script that runs the full suite, and dropped a `teardown` script
+  that pointed at a file which was never shipped. `NOTICE.md` added to the published files.
+
 ## [0.1.0] — 2026-10-09
 
 First release. Every headline behaviour below was verified on real hardware, not just in tests.
