@@ -1,0 +1,11 @@
+# dsh-notify-ar bundle patch: actionable Arabic-first Windows notifications.
+#
+# Applied as ONE insert over the profile root, after dsh-base/dsh-web-app rows.
+# The user's own profile cordis.patch.yml (and any --patch overlays) is applied
+# afterwards and may override this row's whole `config` by id.
+#
+# `name` must equal the package.json `name` (the loader resolves the plugin
+# module from the profile's node_modules under that name).
+- insert:
+    - id: dsh-plugin-notify-ar
+      name: dsh-notify-ar

@@ -1,0 +1,11 @@
+# Build artifacts and local install state
+node_modules/
+tmp-build/
+*.tgz
+
+# npm credentials must never be committed
+.npmrc
+.npm-cache/
+
+# Local logs
+*.log

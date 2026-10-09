@@ -1,0 +1,64 @@
+{
+  "name": "dsh-notify-ar",
+  "version": "0.1.0",
+  "description": "Arabic-first actionable Windows notifications for DeepSeek Harness (dsh): toast buttons that continue, stop, or open the app — and approve or reject the agent's permission requests — without leaving your seat. Bilingual ar/en with RTL.",
+  "type": "module",
+  "main": "lib/index.js",
+  "exports": {
+    ".": "./lib/index.js",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "lib",
+    "scripts",
+    "cordis.patch.yml",
+    "README.md",
+    "README.en.md",
+    "CHANGELOG.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "setup": "node scripts/setup.mjs",
+    "teardown": "node scripts/teardown.mjs",
+    "smoke": "node scripts/smoke.mjs"
+  },
+  "peerDependencies": {
+    "@deepseek-ai/cordis": "^4.0.1"
+  },
+  "engines": {
+    "node": ">=22.5"
+  },
+  "keywords": [
+    "dsh",
+    "dsh-plugin",
+    "deepseek",
+    "harness",
+    "cordis",
+    "plugin",
+    "notify",
+    "notification",
+    "toast",
+    "windows-toast",
+    "arabic",
+    "rtl",
+    "i18n",
+    "actionable-notifications",
+    "approval",
+    "windows"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/qusaykhadour/dsh-notify-ar.git"
+  },
+  "homepage": "https://github.com/qusaykhadour/dsh-notify-ar#readme",
+  "bugs": {
+    "url": "https://github.com/qusaykhadour/dsh-notify-ar/issues"
+  },
+  "license": "MIT",
+  "author": "Qusay Ali Khadour",
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    }
+  }
+}
