@@ -15,12 +15,13 @@
     "README.md",
     "README.en.md",
     "CHANGELOG.md",
-    "LICENSE"
+    "LICENSE",
+    "NOTICE.md"
   ],
   "scripts": {
     "setup": "node scripts/setup.mjs",
-    "teardown": "node scripts/teardown.mjs",
-    "smoke": "node scripts/smoke.mjs"
+    "smoke": "node scripts/smoke.mjs",
+    "test": "node scripts/test-toast.mjs && node scripts/test-pipeline.mjs && node scripts/test-approval.mjs && node scripts/test-approval-wire.mjs"
   },
   "peerDependencies": {
     "@deepseek-ai/cordis": "^4.0.1"
