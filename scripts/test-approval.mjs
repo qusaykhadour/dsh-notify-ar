@@ -1,13 +1,16 @@
 /**
  * Tests for the approval decision logic.
  *
- * The important property is fail-safe: every uncertain path must defer
- * (`'unavailable'`) so the in-app prompt still appears, and only an explicit
- * user answer may grant or deny.
+ * The important property is fail-safe: every uncertain path must return
+ * `DEFER` (which the caller turns into `next()`) so the in-app prompt still
+ * appears, and only an explicit user answer may grant or deny.
+ *
+ * `'unavailable'` would be wrong here: it claims the request and denies it
+ * closed, which is a decision the user never made.
  *
  * Run: node scripts/test-approval.mjs
  */
-import { decideByToast, describeTool, pickLocalized, withTimeout, GRANT, REJECT } from '../lib/approval.js'
+import { decideByToast, describeTool, pickLocalized, withTimeout, GRANT, REJECT, DEFER } from '../lib/approval.js'
 
 let failures = 0
 const check = (label, actual, expected) => {
@@ -32,16 +35,16 @@ check('denies on Reject',
 console.log('\n=== 3. no answer (timeout) => defer to the app ===')
 check('defers when unanswered',
   await decideByToast({ request: { toolName: 'Bash' }, show: async () => null, log }),
-  'unavailable')
+  DEFER)
 
-console.log('\n=== 4. our own show() threw => must NOT grant ===')
-check('fails safe on a thrown error',
+console.log('\n=== 4. our own show() threw => defer, never deny ===')
+check('defers on a thrown error',
   await decideByToast({
     request: { toolName: 'Bash' },
     show: async () => { throw new Error('toast exploded') },
     log,
   }),
-  'unavailable')
+  DEFER)
 
 console.log('\n=== 5. an already-aborted request => cancelled ===')
 const aborted = new AbortController()
@@ -53,13 +56,13 @@ check('respects an aborted signal',
 console.log('\n=== 6. a rogue show() return value => defer, never grant ===')
 check('ignores an unexpected answer',
   await decideByToast({ request: { toolName: 'Bash' }, show: async () => 'yes-please', log }),
-  'unavailable')
+  DEFER)
 
 console.log('\n=== 7. a hung toast hits the deadline => defer ===')
 const t0 = Date.now()
 check('times out to null (defer)',
   await decideByToast({ request: { toolName: 'Bash' }, show: () => new Promise(() => {}), timeoutMs: 150, log }),
-  'unavailable')
+  DEFER)
 check('actually waited about the timeout', Date.now() - t0 >= 140, true)
 
 console.log('\n=== 8. withTimeout never rejects ===')

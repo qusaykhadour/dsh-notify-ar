@@ -29,10 +29,13 @@
 ### 🥇 F1 — أزرار الأذونات (الميزة الأهم)
 لما الوكيل يطلب إذن (sandbox escalation · موافقة أداة)، بدل ما توقف الشغل وترجع للتطبيق:
 إشعار فيه **«موافق»** / **«رفض»** ⇒ القرار يرجع للوكيل فوراً وهو شغّال.
-- المصدر: `ctx.on('approval/request', (request, next) => …)` (waterfall).
-- الإجابة: `'allowed-once'` (الوحيد يلي بيمنح) · `'rejected'` · `'cancelled'` · `'unavailable'`.
-- **Timeout ⇒ `next()`** (نرجع للواجهة داخل التطبيق) — ما منسدّ الباب أبداً.
-- **fail-closed:** إذا فشلنا، الرد `unavailable` ⇒ الأمان محفوظ.
+- المصدر: `ctx.on('approval/request', (request, next) => …, { prepend: true })` (waterfall).
+- القرارات يلي منرجّعها: `'allowed-once'` (الوحيد يلي بيمنح) · `'rejected'` · `'cancelled'`.
+- **غير القرار ⇒ `next()`**: timeout · خطأ عندنا · جواب غير مفهوم — كلها بترجع `next()` مشان
+  الواجهة داخل التطبيق تعرض الطلب. **ما منسدّ الباب أبداً.**
+- ⚠️ **`'unavailable'` ممنوعة علينا**: بالـwaterfall هي *بتclaim* الطلب وبتفشّله fail-closed.
+  يعني لو رجّعناها لمّا المستخدم ما جاوب، منكون **رفضنا إذن ما رفضه هو**. (كانت ثغرة فعلاً —
+  انصلحت بـ`DEFER` بـ0.1.2.)
 
 ### 🥈 F2 — تابع / وقّف (التحكم من الإشعار)
 - **«تابع»** ⇒ `ctx.sessionController.prompt({sessionId, requestId, content:[{type:'text',text}]}, signal)`.

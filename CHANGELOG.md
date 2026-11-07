@@ -6,6 +6,32 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.2] — 2026-11-08
+
+### Fixed
+
+- **An unanswered permission prompt no longer denies the action.** When a toast went
+  unanswered — the deadline passed, or our own toast code threw — the plugin returned
+  `'unavailable'`. In a Cordis waterfall that *claims* the request and fails it closed, so the
+  user silently lost the action even though they never refused it. `decideByToast` now returns a
+  dedicated `DEFER` marker, and the listener turns it into `next()`, handing the request back to
+  the remaining answerers (the in-app prompt). This restores the behaviour SPEC §F1 promised and
+  matches the plugin's stated rule: never block the app.
+- Only an explicit `allowed-once`, `rejected`, or `cancelled` is returned as a decision now.
+
+### Added
+
+- `scripts/test-approval-waterfall.mjs` — mounts the real plugin against a fake Cordis context
+  and drives the actual `approval/request` listener, asserting that a non-decision calls `next()`
+  exactly once, that an internal failure also defers, and that the disabled and no-agent paths
+  pass straight through.
+
+### Verified
+
+- Re-checked against DSH **0.2.2-rc.1**: every API this plugin uses still exists —
+  `sessionController.prompt(request, signal)`, `cancel(request)`, the `agent/status` event,
+  `sessionProjections`, and the `approval/request` waterfall (subscribed with `prepend`).
+
 ## [0.1.1] — 2026-10-09
 
 Documentation and packaging only; no behaviour change.
